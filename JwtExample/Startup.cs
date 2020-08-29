@@ -33,6 +33,8 @@ namespace JwtExample
 
             var jwtSection = Configuration.GetSection(JwtOption.Name);
             services.Configure<JwtOption>(jwtSection);
+            
+            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretKey"));
 
             services.AddAuthentication(options =>
             {
@@ -45,14 +47,16 @@ namespace JwtExample
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOption.SecretKey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateLifetime = jwtOption.ValidateLifetime,
                     ValidIssuer = jwtOption.ValidIssuer,
                     ValidAudience = jwtOption.ValidAudience,
                     ValidateAudience = jwtOption.ValidateAudience,
                     ValidateIssuer = jwtOption.ValidateIssuer,
+                    ValidateIssuerSigningKey= true
                 };
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
