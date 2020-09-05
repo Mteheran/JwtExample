@@ -30,7 +30,8 @@ namespace JwtExample.Controllers
             SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(key);
             signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
         }
-
+        
+        [AllowAnonymous]
         [HttpGet("RequestToken")]
         public JsonResult RequestToken()
         {
